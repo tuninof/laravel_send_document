@@ -1,0 +1,38 @@
+# Laravel & PHP
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+/.env
+Homestead.yaml
+Homestead.json
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
+
+# Logs
+storage/logs/*.log
+
+# Cache
+storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+
+# Builds
+/public/hot
+/public/mix-manifest.json
+
+# Backup
+*.bak
+*.tmp
+*.temp
+
+# Configuração do PHPUnit
+phpunit.xml
+phpunit.xml.dist
+
+# Outros
+/.vagrant/
+

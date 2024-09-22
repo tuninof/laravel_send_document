@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class UserController extends Controller
+class FarmerController extends Controller
 {
     public function verifyCPF(Request $request)
     {
-        $cpf = $request->input('cpf');
-        $produtor = Produtor::where('cpf', $cpf)->first();
+        $cpf = preg_replace('/\D/', '', $request->input('cpf')); // Remove formatação
+
+        $produtor = Produtor::where(DB::raw('REPLACE(REPLACE(REPLACE(cpf, \'.\', \'\'), \'-\', \'\'), \' \', \'\')'), $cpf)->first();
 
         if ($produtor) {
             return response()->json(['name' => $produtor->nome], 200);
@@ -21,19 +22,21 @@ class UserController extends Controller
         return response()->json(['message' => 'CPF not found'], 404);
     }
 
+
     public function confirmUser(Request $request)
     {
-        $cpf = $request->input('cpf');
-        $produtor = Produtor::where('cpf', $cpf)->first();
+        $cpf = preg_replace('/\D/', '', $request->input('cpf')); // Remove formatação
+
+        $produtor = Produtor::where(DB::raw('REPLACE(REPLACE(REPLACE(cpf, \'.\', \'\'), \'-\', \'\'), \' \', \'\')'), $cpf)->first();
 
         if ($produtor) {
             // Gera um código de protocolo
             $protocol = strtoupper(uniqid());
 
-            // Salva o protocolo na tabela "logs"
+            // Salva o protocolo na tabela "logs" com o CPF sem formatação
             DB::table('logs')->insert([
                 'name' => $produtor->nome,
-                'cpf' => $produtor->cpf,
+                'cpf' => $cpf, // Salva o CPF sem formatação
                 'protocol' => $protocol,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -56,8 +59,9 @@ class UserController extends Controller
 
     public function downloadSecondFile(Request $request)
     {
-        $cpf = $request->input('cpf');
-        $produtor = Produtor::where('cpf', $cpf)->first();
+        $cpf = preg_replace('/\D/', '', $request->input('cpf')); // Remove formatação
+
+        $produtor = Produtor::where(DB::raw('REPLACE(REPLACE(REPLACE(cpf, \'.\', \'\'), \'-\', \'\'), \' \', \'\')'), $cpf)->first();
 
         if ($produtor) {
             $filePath = storage_path('app/public/pdfs/lista_defensivos-2024.pdf');
@@ -72,13 +76,14 @@ class UserController extends Controller
         return response()->json(['message' => 'User not found'], 404);
     }
 
+
     public function savePhone(Request $request)
     {
-        $cpf = $request->input('cpf');
+        $cpf = preg_replace('/\D/', '', $request->input('cpf')); // Remove formatação
         $phone = $request->input('phone');
 
         // Busca o log do usuário pelo CPF
-        $log = DB::table('logs')->where('cpf', $cpf)->first();
+        $log = DB::table('logs')->where('cpf', $cpf)->first(); // CPF deve estar limpo
 
         if ($log) {
             // Atualiza o log com o número de telefone

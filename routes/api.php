@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\FarmerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/verify-cpf', [UserController::class, 'verifyCPF']);
-Route::post('/confirm-user', [UserController::class, 'confirmUser']);
-Route::post('/download-second-file', [UserController::class, 'downloadSecondFile']);
-Route::post('/save-phone', [UserController::class, 'savePhone']);
+Route::post('/verify-cpf', [FarmerController::class, 'verifyCPF']);
+Route::post('/confirm-user', [FarmerController::class, 'confirmUser']);
+Route::post('/download-second-file', [FarmerController::class, 'downloadSecondFile']);
+Route::post('/save-phone', [FarmerController::class, 'savePhone']);
 

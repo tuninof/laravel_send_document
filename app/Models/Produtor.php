@@ -16,5 +16,5 @@ class Produtor extends Model
     protected $fillable = ['nome', 'cpf', 'endereco', 'cidade', 'estado', 'telefone', 'empresa'];
 
     // Desativa os timestamps automáticos (created_at, updated_at), caso não existam na tabela
-    public $timestamps = true; // Mude para false se não houver esses campos na tabela
+    public $timestamps = true;
 }
